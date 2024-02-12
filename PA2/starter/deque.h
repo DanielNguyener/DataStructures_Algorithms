@@ -33,7 +33,7 @@ public:
 
 template <class Type>
 Deque<Type>::Deque() { // constructor
-	
+	int test;
 }
 
 template <class Type>
