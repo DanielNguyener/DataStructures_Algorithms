@@ -1,0 +1,12 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "run the makefile",
+            "command": "/home/riceweener/sourcetree/PA0/starter/Makefile",
+            "args": ["main"],
+            "problemMatcher": [],
+        }
+    ],
+    "version": "2.0.0"
+}
