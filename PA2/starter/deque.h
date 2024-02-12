@@ -50,7 +50,7 @@ Deque<Type>& Deque<Type>::operator=(const Deque& other) { //copy assignment
 }
 
 template <class Type>
-bool Deque<Type>::isEmpty() {
+bool Deque<Type>::isEmpty() { // empty boolean
 	return false;
 }
 
