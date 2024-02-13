@@ -220,7 +220,7 @@ Type Deque<Type>::removeFirst() { //remove first node, and return the elment
 
 	}
 	else{
-		return Type();
+		throw std::out_of_range("Queue is empty");
 	}
 
 }
@@ -244,7 +244,7 @@ Type Deque<Type>::removeLast() {
 
 	}
 	else{
-		return Type();
+		throw std::out_of_range("Queue is empty");
 	}
 	
 }
