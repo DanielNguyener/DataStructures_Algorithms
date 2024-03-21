@@ -198,7 +198,7 @@ Type PriorityQueueHeap<Type, Compare>::pq_delete(){
     }
 
     Type root = arr[0];
-    arr[0] = arr[size]; //new root will be the last node.
+    arr[0] = arr[size - 1]; //new root will be the last node.
     size--;
 
     //now fix heap.
