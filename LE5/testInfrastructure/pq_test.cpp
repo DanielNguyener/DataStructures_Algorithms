@@ -111,8 +111,7 @@ int testDelete(Compare compare = Compare()) {
     while (!pq.is_pq_empty()) {
         int num = pq.pq_delete();
         if (num != nums[count]) {
-            cout << "first if" << endl;
-            cout << "num: " << num << " count: " << count << " nums[count]: " << nums[count] << endl;
+
             return 0;
         }
         if constexpr (std::is_same<Compare, std::greater<int>>::value) {
