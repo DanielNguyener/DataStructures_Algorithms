@@ -76,7 +76,7 @@ int AbstractHashTable::hash(std::string s) const {
 
 	//index will be hash modulo capacity
 	int index = hash % capacity;
-
+	
 	return index;
 }
 

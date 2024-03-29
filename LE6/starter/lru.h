@@ -50,7 +50,7 @@ void LRUCache::insertKeyValue(string key,int value){
 	if(m.find(key) != m.end()){
 		//update the value
 		m[key]->value = value;
-
+		
 		//it is now the most RU.
 		//shift all keys
 		
