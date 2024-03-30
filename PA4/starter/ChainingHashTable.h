@@ -29,9 +29,8 @@ ChainingHashTable::ChainingHashTable(): AbstractHashTable() {
 	capacity = 11;
     num_elements = 0;
     maxLoadFactor = 0.7;
-    for(int i = 0; i < capacity; i++){
-        table[i].push_back(HashEntry());
-    }
+    table.resize(capacity);
+    cout << "constructor success" << endl;
 }
 
 // destructor
@@ -49,7 +48,6 @@ ChainingHashTable::~ChainingHashTable() {
 
 // inserts the given string key
 void ChainingHashTable::insert(std::string key, int val) {
-
     //check if load factor exeeds maximum first
     if(this->load_factor() > maxLoadFactor){
         resizeAndRehash();
@@ -59,21 +57,21 @@ void ChainingHashTable::insert(std::string key, int val) {
     int index = hash(key);
     auto &list = table[index];
 
-
     //key deosn't exist
     if(!this->contains(key)){
-
+        
         list.push_back(HashEntry(key,val));
-        cout << "inserted: " << table[index].front().key << endl;
+        cout << "inserted: " << table[index].back().key << endl;
         num_elements++;
-
+    
     }else{
         //key exists: update the value.
-        for(auto i = list.begin(); i != prev(list.end()); i++){
+        for(auto i = list.begin(); i != list.end(); i++){
 
             if(i->key == key){
+                cout << "val before:" << i->val << endl;
                 i->val = val;
-                cout << "success insert:" << key << ", " << val << endl;
+                cout << "updated: " << i->key << " with :" << i->val << endl;
                 return;
             }
         }
@@ -93,8 +91,8 @@ int ChainingHashTable::remove(std::string key) {
         int valRemoved;
         int index = hash(key);
         auto list = table[index];
-
-        for(auto i = list.begin(); i != prev(list.end()); i++){
+        
+        for(auto i = list.begin(); i != list.end(); i++){
             if(i->key == key){
                 valRemoved = i->val;
                 list.erase(i);
@@ -115,12 +113,12 @@ int ChainingHashTable::get(std::string key) const {
     int index = hash(key);
 
     //at index, is there a node with the key?
-    auto list = table[index];
+    auto &list = table[index];
 
     //bool if found
     bool found = false;
 
-    for(auto i = list.begin(); i != prev(list.end()); i++){
+    for(auto i = list.begin(); i != list.end(); i++){
         string nodeKey = i->key;
         if(nodeKey == key){
             found = true;
@@ -129,7 +127,7 @@ int ChainingHashTable::get(std::string key) const {
     }
 
     if(!found){
-        throw std::out_of_range("Key doesn't exist");
+        throw std::out_of_range("Key doesn't exist2");
     }
 
 
@@ -144,7 +142,7 @@ bool ChainingHashTable::contains(const std::string key) const {
     //at index, is there a node with key?
     auto list = table[index];
 
-    for(auto i = list.begin(); i != prev(list.end()); i++){
+    for(auto i = list.begin(); i != list.end(); i++){
         string nodeKey = i->key;
         if(nodeKey == key){
             return true;
@@ -164,7 +162,7 @@ void ChainingHashTable::resizeAndRehash() {
     std::vector<std::list<HashEntry>> newTable(newCapacity);
 
     for(auto i = 0; i < table.size(); i++){
-        for(auto j = table[i].begin(); j != prev(table[i].end()); j++){
+        for(auto j = table[i].begin(); j != table[i].end(); j++){
             int newIndex = hash(j->key);
 
             newTable[newIndex].push_back(HashEntry(j->key, j->val));

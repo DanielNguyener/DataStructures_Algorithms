@@ -38,14 +38,9 @@ int main() {
             int curVal = cht->get(word);
             cht->insert(word, curVal + 1);
         }
-
-        if (actualMap.find(word) != actualMap.end()) {
-            actualMap[word] += 1;
-        } else {
-            actualMap[word] = 1;
-        }
+        cout<< cht->contains(word) << ": " << word << endl;
     }
-
+    
     for (auto it = actualMap.cbegin(); it != actualMap.cend(); it++) {
        if (actualMap[it->first] != cht->get(it->first)) {
             cout << "fail test 1" << endl;

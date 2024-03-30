@@ -26,6 +26,8 @@ int testHashTableInsert(AbstractHashTable* aht, std::unordered_map<string, int>&
             aht->insert(word, curVal + 1);
         }
 
+        cout << aht->contains(word) << endl;
+
         if (actualMap.find(word) != actualMap.end()) {
             actualMap[word] += 1;
         } else {
