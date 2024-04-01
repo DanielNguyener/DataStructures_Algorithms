@@ -26,13 +26,14 @@ int testHashTableInsert(AbstractHashTable* aht, std::unordered_map<string, int>&
             aht->insert(word, curVal + 1);
         }
 
-        cout << aht->contains(word) << endl;
+        
 
         if (actualMap.find(word) != actualMap.end()) {
             actualMap[word] += 1;
         } else {
             actualMap[word] = 1;
         }
+
     }
 
     for (auto it = actualMap.cbegin(); it != actualMap.cend(); it++) {
@@ -121,6 +122,7 @@ int testHashTable(AbstractHashTable* aht, vector<string> words) {
     try {
         std::unordered_map<string, int> actualMap;
         int temp_score = testHashTableInsert(aht, actualMap, words);
+        cout << temp_score << endl;
         if (temp_score == 0) {
             cout << "Failed insert" << endl;
         } else {
@@ -128,6 +130,7 @@ int testHashTable(AbstractHashTable* aht, vector<string> words) {
         }
         score += temp_score;
         temp_score = testHashTableRemove(aht, actualMap);
+        cout << temp_score << endl;
         if (temp_score == 0) {
             cout << "Failed remove" << endl;
         } else {
@@ -135,6 +138,7 @@ int testHashTable(AbstractHashTable* aht, vector<string> words) {
         }
         score += temp_score;
         temp_score = testHashTableInsertAndRemove(aht, words);
+        cout << temp_score << endl;
         if (temp_score == 0) {
             cout << "Failed insert & remove together" << endl;
         } else {

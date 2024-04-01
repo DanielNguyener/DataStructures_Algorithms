@@ -85,7 +85,7 @@ int AbstractHashTable::getSize() const {
 }
 
 float AbstractHashTable::load_factor() const {
-	return num_elements/capacity; 
+	return (static_cast<double>(num_elements)/capacity); 
 }
 
 int AbstractHashTable::findNextPrime(int n) const {

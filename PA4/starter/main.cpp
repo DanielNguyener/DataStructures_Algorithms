@@ -30,26 +30,37 @@ int main() {
     AbstractHashTable* cht = new ChainingHashTable();
     std::unordered_map<string, int> actualMap;
 
+    int count = 0;
+    cout << words.size() << endl;
+
     for (int i = 0; i < words.size(); i++) {
         std::string word = words[i];
-        if (!cht->contains(word)) {
+
+        if (!cht->contains(word)) { //if word not present in hashtble, insert it with a val of 1.
             cht->insert(word, 1);
         } else {
             int curVal = cht->get(word);
-            cht->insert(word, curVal + 1);
+            cht->insert(word, curVal + 1); //if word is alr present, increment it's val by 1 and reinsert
         }
-        cout<< cht->contains(word) << ": " << word << endl;
+
+        if (actualMap.find(word) != actualMap.end()) { //if word is present in actual map, increment by 1.
+            actualMap[word] += 1;
+        } else {
+            actualMap[word] = 1; //this runs //not present, insert it with a count of 1.
+        }
+        cout << i << endl;
     }
-    
+    cout << "insertion complete" << endl;
+    //after inserting all words, compare the counts of each word in hash and actual map
     for (auto it = actualMap.cbegin(); it != actualMap.cend(); it++) {
        if (actualMap[it->first] != cht->get(it->first)) {
-            cout << "fail test 1" << endl;
+            return 0; //doesnt match
        }
     }
 
     if (actualMap.size() != cht->getSize()) {
-        cout << "fail test 2" << endl;
+        return 0; //unique word count dont match
     }
 
-    return 0;
+    return 5;
 }
