@@ -40,6 +40,7 @@ class AbstractHashTable {
 		bool isPrime(int n) const;
 		float load_factor() const;
 		virtual void resizeAndRehash() = 0;
+		int findPrevPrime(int n) const;
 		
 	public: 
 		AbstractHashTable();
@@ -114,14 +115,23 @@ bool AbstractHashTable::isPrime(int n) const {
 		return false;
 	}
 
-	//check if divisible, from 5 to floor(n)/2.
-	for(int i = 5; i < floor(n)/2; i+=2){
-		if(n % i == 0){
+	//check if divisible, from 5 to sqrt(n)
+	for(int i = 5; i * i <= n; i+=6){
+		if(n % i == 0 || n % (i+2) == 0){
 			return false;
 		}
 	}
 
     return true;
 }
+
+int AbstractHashTable::findPrevPrime(int n) const {
+		n--;
+		while (!isPrime(n)) {
+			n--;
+		}
+		return n;
+}
+
 
 #endif

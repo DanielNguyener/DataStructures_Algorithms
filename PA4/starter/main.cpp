@@ -26,8 +26,8 @@ int main() {
         words.push_back(word);
     }
 
-    cout << "Chaining Hash Table" << endl;
-    AbstractHashTable* cht = new ChainingHashTable();
+    cout << "Double Hash Table" << endl;
+    AbstractHashTable* cht = new DoubleHashTable();
     std::unordered_map<string, int> actualMap;
 
     int count = 0;
@@ -36,31 +36,74 @@ int main() {
     for (int i = 0; i < words.size(); i++) {
         std::string word = words[i];
 
-        if (!cht->contains(word)) { //if word not present in hashtble, insert it with a val of 1.
-            cht->insert(word, 1);
-        } else {
-            int curVal = cht->get(word);
-            cht->insert(word, curVal + 1); //if word is alr present, increment it's val by 1 and reinsert
+        if(i == 302){
+            //cout << "here" << endl;
         }
 
-        if (actualMap.find(word) != actualMap.end()) { //if word is present in actual map, increment by 1.
-            actualMap[word] += 1;
+        if (!cht->contains(word)) { //if word not present in hashtble, insert it with a val of 1.
+            
+            cht->insert(word, 1);
+            
         } else {
-            actualMap[word] = 1; //this runs //not present, insert it with a count of 1.
+            int curVal = cht->get(word);
+            
+            cht->insert(word, curVal + 1); //if word is alr present, increment it's val by 1 and reinsert
+    
         }
+
+
+        if (actualMap.find(word) != actualMap.end()) { 
+            // If the word is found in the actualMap
+            actualMap[word] += 1;  // Increment the count associated with the word
+            
+        } else {
+            // If the word is not found in the actualMap
+            actualMap[word] = 1; // Add the word to the map with a count of 1
+        }
+
+        if(cht->get(word) != actualMap[word]) {
+            cout << "actual: " << actualMap[word] << " hash: " << cht->get(word) << endl;
+            cout << i <<endl;
+        }
+
         cout << i << endl;
     }
-    cout << "insertion complete" << endl;
+    //cout << "insertion complete" << endl;
     //after inserting all words, compare the counts of each word in hash and actual map
     for (auto it = actualMap.cbegin(); it != actualMap.cend(); it++) {
        if (actualMap[it->first] != cht->get(it->first)) {
-            return 0; //doesnt match
+           
+            cout <<"doesnt match" << endl;
+            cout << "actual: " << actualMap[it->first] << " hash: " << cht->get(it->first) << endl;
+            return 0;
        }
     }
 
     if (actualMap.size() != cht->getSize()) {
-        return 0; //unique word count dont match
+
+        cout << "unique word count dont match" << endl;
+        return 0;
     }
 
-    return 5;
+    cout << "hash table isnert passed" << endl;
+
+    if (actualMap.size() == 0) {
+        cout << "You have not passed insert yet" << endl;
+        return 0;
+    }
+    for (auto it = actualMap.cbegin(), next_it = it; it != actualMap.cend(); it = next_it) {
+        ++next_it;
+        string word = it->first;
+        actualMap.erase(it);
+        cht->remove(word);
+        if (cht->contains(word)) {
+            return 0;
+        } 
+        if (cht->getSize() != actualMap.size()) {
+            return 0;
+        }
+    }
+
+    cout << "remove passed" << endl;
+
 }

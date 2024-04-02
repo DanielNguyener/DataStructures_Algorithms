@@ -28,7 +28,7 @@ class ChainingHashTable: public AbstractHashTable {
 ChainingHashTable::ChainingHashTable(): AbstractHashTable() {
 	capacity = 11;
     num_elements = 0;
-    maxLoadFactor = 0.7;
+    maxLoadFactor = 1.0;
     table.resize(capacity);
 }
 
@@ -42,7 +42,7 @@ ChainingHashTable::~ChainingHashTable() {
 
     capacity = 11;
     num_elements = 0;
-    maxLoadFactor = 0.7;
+    maxLoadFactor = 1.0;
 }
 
 // inserts the given string key
@@ -158,12 +158,11 @@ void ChainingHashTable::resizeAndRehash() {
    //rehash existing elements into new hash table. (don't just copy, rehash and reinsert)
 
 
-    int newCapacity = findNextPrime(capacity);
+    int newCapacity = findNextPrime(2 * num_elements);
     std::vector<std::list<HashEntry>> newTable(newCapacity);
 
-    int oldCapacity = capacity;
     capacity = newCapacity;
-
+    
     for(auto& list: table){ //for each existing index in table
         if(!list.empty()){
             for(auto& entry: list){ //for each item in index list
