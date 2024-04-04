@@ -49,7 +49,11 @@ int main() {
         }
     }
 
+<<<<<<< HEAD
     for(int i = 0; i < 10000; i+=10){
+=======
+    for(int i = 0; i < 100000; i+=100){
+>>>>>>> d8efb80b235abf66871162baa51dcfa650700deb
 
         auto t1 = high_resolution_clock::now();
 
@@ -57,7 +61,11 @@ int main() {
             string word = unique_words[j];
 
             //only insert unique words
+<<<<<<< HEAD
             o3->insert(word, 1);
+=======
+            o2->insert(word, 1);
+>>>>>>> d8efb80b235abf66871162baa51dcfa650700deb
             
         }
 
@@ -70,14 +78,22 @@ int main() {
         cout << i << endl;
     }
 
+<<<<<<< HEAD
     for(int i = 10000; i < 1000000; i+=5000){
+=======
+    for(int i = 100000; i < 1000000; i+=5000){
+>>>>>>> d8efb80b235abf66871162baa51dcfa650700deb
         auto t1 = high_resolution_clock::now();
 
         for(int j = 0; j < i; j++){
             string word = unique_words[j];
 
             //only insert unique words
+<<<<<<< HEAD
             o3->insert(word, 1);
+=======
+            o2->insert(word, 1);
+>>>>>>> d8efb80b235abf66871162baa51dcfa650700deb
 
         }
 
@@ -87,16 +103,28 @@ int main() {
         data.push_back(ms_double.count());
         inputs.push_back(i);
 
+<<<<<<< HEAD
         if(ms_double.count() > 10000){
             break;
         }
 
         cout << i << endl;
+=======
+        cout << i << endl;
+
+        if(ms_double.count() >= 20000){
+            break;
+        }
+>>>>>>> d8efb80b235abf66871162baa51dcfa650700deb
     }
 
 
 
+<<<<<<< HEAD
     ofstream outputFile("o3.csv");
+=======
+    ofstream outputFile("o2.csv");
+>>>>>>> d8efb80b235abf66871162baa51dcfa650700deb
     if(!outputFile.is_open()){
         cerr << "Error: unable to open output file." << endl;
         return 1;
