@@ -66,7 +66,7 @@
                 if(!table[currentIndex].DELETED && !table[currentIndex].isFilled){ //not filled & not deleted
                     //insert
                     table[currentIndex] = HashEntry(key, val);
-                    //cout << "inserted: " << key << endl;
+
                     num_elements++;
                     found = true;
                     break; // finished inserting at first non-filled not-deleted.
@@ -76,7 +76,7 @@
                 //update
                 table[currentIndex].val = val;
                 found = true;
-                //cout << "updated: " << key << endl;
+
 
                 break; //finished updating
             }
@@ -98,7 +98,7 @@
         }
 
         //if we haven't returned already. that means all slots are occupied or deleted.
-        if(deletedIndex != -1 && !found){ //if there was a deleted slot, tje value would've changed, and will be at that real index.
+        if(deletedIndex != -1 && !found){ //if there was a deleted slot, the value would've changed, and will be at that real index.
             //insert at unfilled, deleted.
             table[deletedIndex] = HashEntry(key, val);
             num_elements++;
@@ -122,11 +122,12 @@
         int offset = secondHash(key);
         int currentIndex = hashIndex;
         int elmChecked = 0;
+        int valRemoved = 0;
 
-        while(elmChecked < num_elements){
+        while(true){
             if(table[currentIndex].isFilled && table[currentIndex].key == key){ //is filled and matching key
 
-                int valRemoved = table[currentIndex].val;
+                valRemoved = table[currentIndex].val;
 
                 table[currentIndex].isFilled = false;
                 table[currentIndex].key = "";
@@ -134,17 +135,23 @@
                 table[currentIndex].DELETED = true;
                 
                 num_elements--;
-                return valRemoved;
+                break;
             }
 
 
             //move to next index if //filled, and not same key.
             currentIndex = (currentIndex + offset) % capacity;
             elmChecked++;
+
+            if(elmChecked >= capacity){ //we've checked all slots
+                break;
+            }
         }
 
-        //we get to this point, then it doesn't exist.
-        throw std::out_of_range("Key doesn't exist1");
+        if(valRemoved == 0){
+            throw std::out_of_range("Key not found");
+        }
+        
     }
 
     // getter to obtain the value associated with the given key
@@ -155,7 +162,7 @@
         int currentIndex = hashIndex;
         int elm_checked = 0;
 
-        while(elm_checked < table.size()){
+        while(elm_checked < capacity){
             if(table[currentIndex].key == key && table[currentIndex].isFilled){
                 return table[currentIndex].val;
             }
@@ -165,8 +172,8 @@
                 elm_checked++;
             }
         }
-        if(elm_checked == table.size()){
-            throw std::out_of_range("Key doesn't exist2");
+        if(elm_checked >= capacity){
+            throw std::out_of_range("Key not found");
         }
     }
 
@@ -177,7 +184,7 @@
         int currentIndex = hashIndex;
         int elm_checked = 0;
 
-        while(elm_checked < table.size()){
+        while(elm_checked < capacity){
             if(table[currentIndex].key == key && table[currentIndex].isFilled){
                 return true;
             }
@@ -192,7 +199,7 @@
 void DoubleHashTable::resizeAndRehash() {
 
     
-    int newCapacity = findNextPrime(2 * num_elements);
+    int newCapacity = findNextPrime(2 * capacity);
     prevPrime = findPrevPrime(newCapacity); // Increase capacity more gradually
     capacity = newCapacity;
 
@@ -202,20 +209,21 @@ void DoubleHashTable::resizeAndRehash() {
     // Rehash existing elements into the new table
     for (const auto& entry : table) {
         if (entry.isFilled) {
-            int hashIndex = hash(entry.key); // Primary hash
+            int currentIndex = hash(entry.key); // Primary hash
             int offset = secondHash(entry.key); // Secondary hash
-            int currentIndex = hashIndex;
-            while (newTable[currentIndex].isFilled) {
-                currentIndex = (currentIndex + offset) % newCapacity; // Linear probing
+
+            while(true) {
+                if(!newTable[currentIndex].isFilled){
+                    newTable[currentIndex] = entry;
+                    break;
+                }
+                currentIndex = (currentIndex + offset) % newCapacity;
             }
-            newTable[currentIndex] = entry;
         }
     }
 
     // Move the new table into the existing table, avoiding unnecessary memory reallocation
     table = std::move(newTable);
-
-    //cout << "Resized to: " << capacity << endl;
 }
 
     // helper functions 
