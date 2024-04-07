@@ -34,10 +34,12 @@ int testSkipListHardCoded(){
         int deleteKey = deleteOrder[i];
         skipList.deleteElement(deleteKey);
         if (skipList.searchElement(deleteKey)) {
+            cout << "1" << endl;
             return score;
         }
         for (int j = i + 1; j < 7; j++) {
             if (!skipList.searchElement(deleteOrder[j])) {
+                cout << "2" << endl;
                 return score;
             }
         }

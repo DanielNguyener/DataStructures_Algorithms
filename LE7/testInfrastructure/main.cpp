@@ -27,4 +27,24 @@ int main() {
     }
 
     skipList.displayList();
+    
+    //test deletion
+    int deleteOrder[] = {3, 6, 9, 2, 8, 4, 5};
+    for (int i = 0; i < 7; i++) {
+        int deleteKey = deleteOrder[i];
+        skipList.deleteElement(deleteKey); //delete key at i
+        if (skipList.searchElement(deleteKey)) {
+            cout << "was not deleted" << endl;
+        }
+        for (int j = i + 1; j < 7; j++) {
+            if (!skipList.searchElement(deleteOrder[j])) {
+                cout << deleteOrder[j] << " was not found" << endl;
+            }
+        }
+    }
+
+    cout << "Delete passed in hardcoded skip list" << endl;
+
+    skipList.displayList();
+
 }
