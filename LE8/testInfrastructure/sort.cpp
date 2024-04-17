@@ -85,6 +85,7 @@ void insertionSort(int *arr, int n) {
         data.pq_insert(arr[i]);
     }
 
+
     for(int i = 0; i < n; i++){
         arr[i] = data.pq_delete();
     }

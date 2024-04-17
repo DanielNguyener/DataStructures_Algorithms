@@ -30,6 +30,7 @@ SortedPriorityQueue<Type>::SortedPriorityQueue() {
     size = 0;
     capacity = 10;
     arr = new Type[capacity];
+    startIndex = 0;
 }
 
 template <typename Type>
@@ -88,9 +89,8 @@ Type SortedPriorityQueue<Type>::pq_delete(){
             throw std::out_of_range("Sorted Queue is empty.");
     }
 
-
     Type deleted = arr[startIndex];
-    
+
     if(startIndex < size){
         startIndex++;
     }

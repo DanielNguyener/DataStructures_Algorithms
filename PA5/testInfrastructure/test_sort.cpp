@@ -10,8 +10,10 @@
 using namespace std;
 
 enum SORT_TYPE {
-    RADIX_SORT,
-    INSERTION_SORT
+    BUBBLE_SORT,
+    HEAP_SORT,
+    MERGE_SORT,
+    QUICK_SORT
 };
 
 int testSort(SORT_TYPE sort_type, int n) {
@@ -25,30 +27,32 @@ int testSort(SORT_TYPE sort_type, int n) {
     }
 
     sort(arrCopy.begin(), arrCopy.end());
-    
-    auto start = std::chrono::high_resolution_clock::now();
-    if (sort_type == SORT_TYPE::RADIX_SORT) {
-       radixSort(arr, n);
-    } else if (sort_type == SORT_TYPE::INSERTION_SORT) {
-       insertionSort(arr, n);
-    }
 
+    auto start = std::chrono::high_resolution_clock::now();
+    if (sort_type == SORT_TYPE::BUBBLE_SORT) {
+       bubbleSort(arr, n);
+    } else if (sort_type == SORT_TYPE::HEAP_SORT) {
+       heapSort(arr, n);
+    } else if (sort_type == SORT_TYPE::MERGE_SORT) {
+        mergeSort(arr, 0, n - 1);
+    } else if (sort_type == SORT_TYPE::QUICK_SORT) {
+        quickSort(arr, 0, n - 1);
+    }
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
     for(int i=0; i<n; i++){
         if (arrCopy[i] != arr[i]) {
-            cout << "expected: " << arrCopy[i] << " got: " << arr[i] << " at index: " << i << endl;
             cout << "Failed" << endl;
             delete[] arr;
             return 0;
         }
-    } 
+    }
 
     delete[] arr;
     cout << "Passed" << endl;
     std::cout << "Time taken: " << elapsed.count() << " seconds" << std::endl;
     cout << endl;
-    return 10;
+    return 15;
 }
 
 int main(){
@@ -57,15 +61,21 @@ int main(){
     int finalScore = 0;
    
     try {
-        cout << "Testing Radix Sort:" << endl;
-        finalScore += testSort(SORT_TYPE::RADIX_SORT, 1000000);
+        cout << "Testing Bubble Sort:" << endl;
+        finalScore += testSort(SORT_TYPE::BUBBLE_SORT, 100000);
 
-        cout << "Testing Insertion Sort:" << endl;
-        finalScore += testSort(SORT_TYPE::INSERTION_SORT, 200000);
+        cout << "Testing Heap Sort:" << endl;
+        finalScore += testSort(SORT_TYPE::HEAP_SORT, 1000000);
+
+        cout << "Testing Merge Sort:" << endl;
+        finalScore += testSort(SORT_TYPE::MERGE_SORT, 1000000);
+
+        cout << "Testing Quick Sort:" << endl;
+        finalScore += testSort(SORT_TYPE::QUICK_SORT, 1000000);
     } catch(std::exception& e) {
         cout << e.what() << endl;
     }
     
-    cout << "Score: " << finalScore << " / 20" << endl;
+    cout << "Score: " << finalScore << " / 60" << endl;
     return 0;
 }
