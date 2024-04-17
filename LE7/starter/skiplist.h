@@ -90,7 +90,7 @@ void SkipList::insertElement(int key) {
         level = p;
     }
 
-    Node* newNode = new Node(key, level); //new node
+    Node* newNode = new Node(key, p); //new node
     
     //traverse list: find where to insert
     Node* current = header; //start at the top
