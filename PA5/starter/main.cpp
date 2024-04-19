@@ -9,6 +9,9 @@
 #include "sort.cpp"
 
 using namespace std;
+using std::chrono::high_resolution_clock;
+using std::chrono::duration_cast;
+using std::chrono::duration;
 
 enum SORT_TYPE {
     BUBBLE_SORT,
@@ -39,18 +42,21 @@ double testSort(SORT_TYPE sort_type, int n) {
 
     auto end = std::chrono::high_resolution_clock::now();
 
-    std::chrono::duration<double> elapsed = end - start;
+    duration<double> elapsed = end - start;
+    
     return elapsed.count();
 
 };
 
 int main() {
+    
     vector<int> inputs1;
     vector<double> data1;
     cout << "Testing Bubble Sort:" << endl;
     for(int i = 0; i < 100000; i+=5000){
         cout << "bubble: " << i << endl;
         data1.push_back(testSort(SORT_TYPE::BUBBLE_SORT, i));
+        inputs1.push_back(i);
     }
 
     ofstream outputFile1("BubbleSort.csv");
@@ -66,7 +72,9 @@ int main() {
     vector<int> inputs2;
     cout << "Testing Heap Sort:" << endl;
     for(int i = 0; i < 1000000; i+=5000){
+        cout << "heap: " << i << endl;
         data2.push_back(testSort(SORT_TYPE::HEAP_SORT, i));
+        inputs2.push_back(i);
     }
     ofstream outputFile2("HeapSort.csv");
     outputFile2 << "Input Size,Insertion Time (s)" << endl;
@@ -80,7 +88,9 @@ int main() {
     vector<int> inputs3;
     cout << "Testing Merge Sort:" << endl;
     for(int i = 0; i < 1000000; i+=5000){
+        cout << "merge: " << i << endl;
         data3.push_back(testSort(SORT_TYPE::MERGE_SORT, i));
+        inputs3.push_back(i);
     }
     ofstream outputFile3("MergeSort.csv");
     outputFile3 << "Input Size,Insertion Time (s)" << endl;
@@ -94,7 +104,9 @@ int main() {
     vector<int> inputs4;
     cout << "Testing Quick Sort:" << endl;
     for(int i = 0; i < 1000000; i+=5000){
+        cout << "quick: " << i << endl;
         data4.push_back(testSort(SORT_TYPE::QUICK_SORT, i));
+        inputs4.push_back(i);
     }
     ofstream outputFile4("QuickSort.csv");
     outputFile4 << "Input Size,Insertion Time (s)" << endl;
