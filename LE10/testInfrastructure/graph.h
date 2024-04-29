@@ -45,15 +45,20 @@ class Graph {
 
             // this provides the shortest distance from start, to all destinations. 
 
-            vector<pair<int, int>> p;
-            priority_queue<Edge, vector<Edge>, greater<Edge>> pq; //min-heap to find shortest path.
+            vector<pair<int, int>> p(n);
 
-            //vector<int> distance(n, INT_MAX); //initialize a vector that stores distances
+            for(int i = 0; i < n; i++){
+                p[i] = {INT_MAX, -1};
+            }
 
-            pq.push(Edge(0, startNode)); //push the start node to the min-heap.
+            p[startNode] = {0, startNode}; //initialize the start node to 0.
+            
+            priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq; 
 
-            //distance[startNode] = 0; //distance to start node is 0.
-            p[startNode].first = 0;
+            Edge edge(0, startNode); //initialize the start node to 0.
+            pq.push(edge);
+
+
             while(!pq.empty()){
 
                 //extract the first vertex's distance
@@ -61,22 +66,20 @@ class Graph {
                 pq.pop();
 
                 //iterate through the neighbors of the vertex
-                list<Edge>::iterator i;
-                for(i = v[current_w].begin(); i != v[current_w].end(); i++){ //while there are neighbors,
+                
+                for(const Edge& edge : v[current_w]){ //while there are neighbors,
                     
                     //get vertex and weight of neighbor
-                    int neighbor = (*i).first;
-                    int n_weight = (*i).second;
+                    int v = edge.first;
+                    int n_weight = edge.second;
 
-                    //if distance to neighbor is greater than distance to current vertex
-                    if(p[neighbor].first > p[current_w].first + n_weight){
-                        //if(distance[neighbor] > distance[current_w] + n_weight){
-                        //then update
-                        //distance[neighbor] = distance[current_w] + n_weight;
-                        p[neighbor].first = p[current_w].first + n_weight;
-                        p[neighbor].second = current_w; //update the previous vertex to the current vertex.
+                    if(p[v].first > p[current_w].first + n_weight){
+                        
 
-                        pq.push(Edge(p[neighbor].first, neighbor)); //push the neighbor to the min-heap (REMEMBER DISTANCE FIRST)
+                        p[v].first = p[current_w].first + n_weight;
+                        p[v].second = current_w; //update the previous vertex to the current vertex.
+
+                        pq.push({p[v].first, v}); //push the neighbor to the min-heap (REMEMBER DISTANCE FIRST)
                     }
                 }
             }
@@ -86,7 +89,33 @@ class Graph {
         }
 
         string printShortestPath(int startNode, int endNode) {
-           return "  ";
+            
+            //get vector of shortest paths from startNode
+            vector<pair<int, int>> vector = dijkstra(startNode);
+
+            // If there is no path from startNode to endNode, return an empty string
+            if (vector[endNode].second == -1 || vector[endNode].first == INT_MAX) {
+                return ""; 
+            }
+
+            // Construct the path string starting from endNode
+            string path = to_string(endNode);
+
+            /// Traverse through the path from endNode to startNode
+            int parent = vector[endNode].second;
+
+            while (parent != startNode) {
+
+                // add the parent node to the string
+                path = to_string(parent) + " " + path;
+
+                // Update parent to its previous vertex along the shortest path
+                parent = vector[parent].second;
+            }
+
+            // add the startNode to the string
+            path = to_string(startNode) + " " + path + " ";
+            return path;
         }
 };
 
